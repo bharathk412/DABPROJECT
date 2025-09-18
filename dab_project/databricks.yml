@@ -1,0 +1,39 @@
+# This is a Databricks asset bundle definition for dab_project.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: dab_project
+
+include:
+  - resources/*.yml
+
+variables:              # 👈 top-level variables definition
+  catalog:
+    default: citibike_dev
+  dev_flag:
+    default: true
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-4450094941294278.18.azuredatabricks.net
+      root_path: /Workspace/Users/bharathkumar4121@outlook.com/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      user_name: bharathkumar4121@outlook.com
+
+  test:
+    mode: production
+    variables:          # 👈 override variables (assign values, no "default")
+      catalog: citibike_test
+      dev_flag: false
+    presets:
+      name_prefix: "[testing] "
+    workspace:
+      host: https://adb-3289474690687912.12.azuredatabricks.net
+      root_path: /Workspace/Users/bharathkumar4121@outlook.com/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: bharathkumar4121@outlook.com
+        level: CAN_MANAGE
+    run_as:
+      user_name: bharathkumar4121@outlook.com
